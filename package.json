@@ -1,0 +1,19 @@
+{
+  "name": "thunder-ngx",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Thunderbird-Erweiterung: Mails samt PDF-Anhängen als ein Dokument an Paperless-ngx senden",
+  "type": "module",
+  "scripts": {
+    "vendor": "node scripts/vendor.mjs",
+    "postinstall": "node scripts/vendor.mjs",
+    "test": "node --test \"test/**/*.test.js\"",
+    "lint": "web-ext lint --source-dir src",
+    "build": "web-ext build --source-dir src --artifacts-dir dist --overwrite-dest"
+  },
+  "devDependencies": {
+    "@pdf-lib/fontkit": "^1.1.1",
+    "pdf-lib": "^1.17.1",
+    "web-ext": "^10.7.0"
+  }
+}

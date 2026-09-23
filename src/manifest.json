@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Thunder-ngx",
+  "version": "0.1.0",
+  "description": "Sendet Mails samt PDF-Anhängen als ein einziges Dokument an Paperless-ngx.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "thunder-ngx@mwmrs",
+      "strict_min_version": "128.0"
+    }
+  },
+  "icons": {
+    "32": "icons/icon.svg",
+    "64": "icons/icon.svg"
+  },
+  "background": {
+    "scripts": ["background.js"],
+    "type": "module"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'"
+  },
+  "permissions": ["messagesRead", "menus", "storage", "notifications"],
+  "optional_host_permissions": ["http://*/*", "https://*/*"],
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": false
+  },
+  "message_display_action": {
+    "default_title": "An Paperless senden",
+    "default_icon": "icons/icon.svg"
+  }
+}

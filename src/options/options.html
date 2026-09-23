@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Thunder-ngx Einstellungen</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <form id="settings">
+    <label>
+      Paperless-URL
+      <input name="paperlessUrl" type="url" placeholder="https://paperless.example.org" required>
+    </label>
+    <label>
+      API-Token
+      <input name="apiToken" type="password" autocomplete="off" required>
+      <small>In Paperless unter „Mein Profil“ → „API-Auth-Token“.</small>
+    </label>
+    <label>
+      Tag-IDs (optional)
+      <input name="tagIds" type="text" placeholder="z. B. 3, 7">
+      <small>Werden jedem hochgeladenen Dokument zugewiesen.</small>
+    </label>
+    <label class="check">
+      <input name="waitForResult" type="checkbox">
+      Auf Verarbeitungsergebnis warten und melden
+    </label>
+    <div class="buttons">
+      <button type="submit">Speichern</button>
+      <button type="button" id="test">Verbindung testen</button>
+    </div>
+    <p id="status" role="status"></p>
+  </form>
+  <script type="module" src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+body {
+  font: menu;
+  margin: 1em;
+  max-width: 34em;
+}
+label {
+  display: block;
+  margin-bottom: 1em;
+}
+input[type="url"],
+input[type="text"],
+input[type="password"] {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.25em;
+}
+small {
+  display: block;
+  opacity: 0.7;
+  margin-top: 0.2em;
+}
+.check input {
+  margin-right: 0.4em;
+}
+.buttons {
+  display: flex;
+  gap: 0.5em;
+}
+#status.error {
+  color: #c50042;
+}
+#status.ok {
+  color: #058b00;
+}
