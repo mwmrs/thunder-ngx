@@ -46,8 +46,10 @@ Ein eigener, eingeschränkter Benutzer reicht (kein Superuser, kein Staff):
 | Dokument: Hinzufügen (`add_document`) | Upload, immer nötig |
 | PaperlessTask: Anzeigen (`view_paperlesstask`) | Statusmeldung nach dem Upload; entfällt, wenn „Auf Verarbeitungsergebnis warten“ aus ist |
 
-Für die Tag-IDs ist kein Tag-Recht nötig. Hochgeladene Dokumente gehören dem
-Upload-Benutzer; damit der eigene Hauptbenutzer sie sieht, entweder Superuser sein
+Tags vergibt die Erweiterung bewusst nicht, das übernimmt Paperless selbst
+(automatische Zuordnung, Workflows).
+
+Hochgeladene Dokumente gehören dem Upload-Benutzer; damit der eigene Hauptbenutzer sie sieht, entweder Superuser sein
 oder per Paperless-Workflow (Auslöser „Verarbeitung gestartet“, Quelle „API-Upload“)
 Eigentümer bzw. Anzeigerechte zuweisen.
 

@@ -70,7 +70,6 @@ export async function uploadDocument(settings, { pdfBytes, filename, title, crea
   form.append("document", new Blob([pdfBytes], { type: "application/pdf" }), filename);
   form.append("title", title);
   if (created) form.append("created", created.toISOString());
-  for (const id of settings.tagIds) form.append("tags", String(id));
 
   const res = await apiFetch(settings, "/api/documents/post_document/", {
     method: "POST",

@@ -8,7 +8,6 @@ label {
   margin-bottom: 1em;
 }
 input[type="url"],
-input[type="text"],
 input[type="password"] {
   display: block;
   width: 100%;

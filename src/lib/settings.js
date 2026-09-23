@@ -3,7 +3,6 @@
 export const DEFAULTS = {
   paperlessUrl: "",
   apiToken: "",
-  tagIds: [],
   waitForResult: true,
 };
 
@@ -26,13 +25,4 @@ export function originPattern(url) {
   const { protocol, hostname } = new URL(url);
   if (protocol !== "http:" && protocol !== "https:") throw new Error("Nur http:// oder https://");
   return `${protocol}//${hostname}/*`;
-}
-
-/** "3, 7 12" -> [3, 7, 12] */
-export function parseTagIds(text) {
-  return String(text)
-    .split(/[\s,;]+/)
-    .filter(Boolean)
-    .map(Number)
-    .filter((n) => Number.isInteger(n) && n > 0);
 }

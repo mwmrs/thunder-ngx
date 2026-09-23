@@ -1,4 +1,4 @@
-import { loadSettings, originPattern, parseTagIds, saveSettings } from "../lib/settings.js";
+import { loadSettings, originPattern, saveSettings } from "../lib/settings.js";
 import { testConnection } from "../lib/paperless.js";
 
 const form = document.getElementById("settings");
@@ -13,7 +13,6 @@ function readForm() {
   return {
     paperlessUrl: form.paperlessUrl.value.trim().replace(/\/+$/, ""),
     apiToken: form.apiToken.value.trim(),
-    tagIds: parseTagIds(form.tagIds.value),
     waitForResult: form.waitForResult.checked,
   };
 }
@@ -55,6 +54,5 @@ document.getElementById("test").addEventListener("click", () => {
 loadSettings().then((s) => {
   form.paperlessUrl.value = s.paperlessUrl;
   form.apiToken.value = s.apiToken;
-  form.tagIds.value = s.tagIds.join(", ");
   form.waitForResult.checked = s.waitForResult;
 });

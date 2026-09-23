@@ -3,7 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { testConnection } from "../src/lib/paperless.js";
 
-const settings = { paperlessUrl: "http://rohan:8000/", apiToken: "t", tagIds: [], waitForResult: true };
+const settings = { paperlessUrl: "http://rohan:8000/", apiToken: "t", waitForResult: true };
 
 /** routes: { "POST /api/documents/post_document/": status, ... } */
 function fakeFetch(routes) {
