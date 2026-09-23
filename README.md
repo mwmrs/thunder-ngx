@@ -33,7 +33,7 @@ Entwickelt für Thunderbird 153 ESR und Paperless-ngx 3.2.1 (API-Schnittstellen 
 npm install        # installiert pdf-lib, fontkit, web-ext und kopiert sie nach src/vendor
 npm test           # PDF-Erzeugung unter Node testen (braucht poppler-utils)
 npm run lint       # web-ext lint (Warnung zu "messagesRead" ist normal, prüft gegen Firefox)
-npm run build      # erzeugt dist/thunder-ngx-<version>.zip (als .xpi installierbar)
+npm run build      # erzeugt dist/thunder-ngx-<version>.xpi
 ```
 
 In Thunderbird laden:
@@ -41,6 +41,12 @@ In Thunderbird laden:
 1. Extras → Add-ons und Themes → Zahnrad → **Add-ons debuggen**
 2. **Temporäres Add-on laden …** → `src/manifest.json`
 3. Nach Code-Änderungen dort **Neu laden**, über **Untersuchen** gibt es Konsole und Debugger.
+
+Dauerhaft installieren (Thunderbird verlangt keine Signatur):
+
+1. `npm run build`
+2. Extras → Add-ons und Themes → Zahnrad → **Add-on aus Datei installieren …** → `dist/thunder-ngx-<version>.xpi`
+3. Für ein Update `version` in `src/manifest.json` erhöhen, neu bauen und die neue `.xpi` genauso installieren.
 
 ## Bedienung
 

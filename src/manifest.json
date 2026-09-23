@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Thunder-ngx",
-  "version": "0.1.0",
-  "description": "Sendet Mails samt PDF-Anhängen als ein einziges Dokument an Paperless-ngx.",
+  "version": "0.2.0",
+  "description": "Sendet Mails samt PDF- und Bildanhängen als ein einziges Dokument an Paperless-ngx.",
   "browser_specific_settings": {
     "gecko": {
       "id": "thunder-ngx@mwmrs",

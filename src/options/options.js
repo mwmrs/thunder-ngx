@@ -1,4 +1,4 @@
-import { loadSettings, originPattern, saveSettings } from "../lib/settings.js";
+import { loadSettings, originPattern, revokeOtherOrigins, saveSettings } from "../lib/settings.js";
 import { testConnection } from "../lib/paperless.js";
 
 const form = document.getElementById("settings");
@@ -30,6 +30,7 @@ function requestAccess(settings) {
   }
   return messenger.permissions.request({ origins: [pattern] }).then((granted) => {
     if (!granted) throw new Error("Zugriff auf die Paperless-Adresse wurde nicht erlaubt.");
+    return pattern;
   });
 }
 
@@ -37,8 +38,12 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
   const settings = readForm();
   requestAccess(settings)
-    .then(() => saveSettings(settings))
-    .then(() => show("Gespeichert.", "ok"))
+    .then(async (pattern) => {
+      await saveSettings(settings);
+      // Nur die aktuelle Paperless-Adresse freigegeben lassen.
+      const removed = await revokeOtherOrigins(pattern);
+      show(removed.length ? `Gespeichert. Nicht mehr benötigte Freigaben entfernt: ${removed.join(", ")}` : "Gespeichert.", "ok");
+    })
     .catch((err) => show(err.message, "error"));
 });
 
