@@ -1,6 +1,7 @@
 // Liest eine Mail über die Thunderbird-MailExtension-API aus.
 
 import { htmlToText, safeFilename } from "./text.js";
+import { IMAGE_LIMITS } from "./image.js";
 
 /** Durchläuft eine (ggf. seitenweise gelieferte) MessageList. */
 export async function* iterateMessageList(list) {
@@ -17,8 +18,13 @@ function localIsoDate(date) {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }
 
-function isPdf(attachment) {
-  return attachment.contentType?.toLowerCase() === "application/pdf" || /\.pdf$/i.test(attachment.name ?? "");
+/** "pdf", "image" (JPEG/PNG) oder null – nach MIME-Typ oder Dateiendung. */
+function attachmentKind(attachment) {
+  const type = attachment.contentType?.toLowerCase() ?? "";
+  const name = attachment.name ?? "";
+  if (type === "application/pdf" || /\.pdf$/i.test(name)) return "pdf";
+  if (/^image\/(jpeg|jpg|pjpeg|png)$/.test(type) || /\.(jpe?g|png)$/i.test(name)) return "image";
+  return null;
 }
 
 async function getRawMail(messageId) {
@@ -52,10 +58,27 @@ export async function collectMail(header) {
 
   const attachments = [];
   for (const a of attachmentList) {
-    const entry = { name: a.name || "(unbenannt)", size: a.size };
-    if (isPdf(a)) {
-      const file = await messenger.messages.getAttachmentFile(id, a.partName);
-      entry.bytes = new Uint8Array(await file.arrayBuffer());
+    const kind = attachmentKind(a);
+    const entry = {
+      name: a.name || "(unbenannt)",
+      size: a.size,
+      kind,
+      // Im Mailtext eingebettetes Bild (z. B. Signatur-Logo, auch GIF u. Ä.).
+      inline:
+        a.contentDisposition === "inline" &&
+        Boolean(a.contentId) &&
+        (a.contentType?.toLowerCase().startsWith("image/") ?? false),
+    };
+    // Gelöschte, abgetrennte oder verlinkte Anhänge haben keinen Inhalt in der Mail.
+    const present = (a.type ?? "normal") === "normal";
+    const skipLogo = entry.inline && a.size < IMAGE_LIMITS.inlineMinBytes;
+    if (kind && present && !skipLogo) {
+      try {
+        const file = await messenger.messages.getAttachmentFile(id, a.partName);
+        entry.bytes = new Uint8Array(await file.arrayBuffer());
+      } catch (err) {
+        console.warn(`thunder-ngx: Anhang ${entry.name} nicht abrufbar`, err);
+      }
     }
     attachments.push(entry);
   }

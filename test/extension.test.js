@@ -18,6 +18,8 @@ async function pdfBytes() {
   return await doc.save();
 }
 
+const jpeg = readFileSync(join(root, "test/fixtures/orient-6.jpg"));
+const fetchedParts = [];
 const eml = "From: a@example.org\r\nSubject: Test\r\n\r\nHallo\r\n";
 const header = {
   id: 42,
@@ -51,9 +53,13 @@ globalThis.messenger = {
     listAttachments: async () => [
       { name: "beleg.pdf", contentType: "application/pdf", partName: "1.2", size: 500 },
       { name: "liste.xlsx", contentType: "application/octet-stream", partName: "1.3", size: 900 },
+      { name: "foto.jpg", contentType: "image/jpeg", partName: "1.4", size: jpeg.length },
+      { name: "logo.png", contentType: "image/png", partName: "1.5", size: 3000, contentDisposition: "inline", contentId: "logo@x" },
+      { name: "alt.pdf", contentType: "application/pdf", partName: "1.6", size: 500, type: "deleted" },
     ],
     getAttachmentFile: async (_id, partName) => {
-      assert.equal(partName, "1.2", "nur PDF-Anhänge sollen geladen werden");
+      fetchedParts.push(partName);
+      if (partName === "1.4") return new File([jpeg], "foto.jpg");
       return new File([await pdfBytes()], "beleg.pdf");
     },
   },
@@ -78,6 +84,9 @@ test("collectMail + buildMailPdf ergeben ein PDF mit .eml", async () => {
   assert.equal(mail.bodyText, "Hallo Welt");
   assert.ok(mail.attachments[0].bytes);
   assert.equal(mail.attachments[1].bytes, undefined);
+  // PDF und Foto werden geladen; xlsx, Inline-Logo und gelöschter Anhang nicht.
+  assert.deepEqual(fetchedParts, ["1.2", "1.4"]);
+  assert.equal(mail.attachments[3].inline, true);
 
   const bytes = await buildMailPdf(mail, {
     PDFLib,
@@ -90,5 +99,5 @@ test("collectMail + buildMailPdf ergeben ein PDF mit .eml", async () => {
   const file = join(mkdtempSync(join(tmpdir(), "thunder-ngx-")), "out.pdf");
   writeFileSync(file, bytes);
   assert.match(execFileSync("pdfdetach", ["-list", file], { encoding: "utf8" }), /2026-09-23 Test _ mit_ Sonderzeichen\.eml/);
-  assert.match(execFileSync("pdfinfo", [file], { encoding: "utf8" }), /Pages:\s+2/);
+  assert.match(execFileSync("pdfinfo", [file], { encoding: "utf8" }), /Pages:\s+3/);
 });

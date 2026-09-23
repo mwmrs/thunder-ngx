@@ -1,17 +1,29 @@
 # Thunder-ngx
 
-Thunderbird-Erweiterung (MailExtension, Manifest V3), die eine Mail samt PDF-Anhängen
+Thunderbird-Erweiterung (MailExtension, Manifest V3), die eine Mail samt PDF- und Bildanhängen
 als **ein** PDF-Dokument an [Paperless-ngx](https://docs.paperless-ngx.com/) sendet.
 Paperless braucht dafür keinen Zugriff auf das Postfach, nur einen API-Token.
 
 Aufbau des erzeugten PDFs:
 
 1. Mailseite(n): Betreff, Von, An, Cc, Datum, Anhangsübersicht, Mailtext
-2. Seiten aller PDF-Anhänge
+2. Seiten aller PDF-Anhänge und je eine Seite pro JPEG-/PNG-Bild, in der Reihenfolge der Anhänge
 3. Original-Mail als eingebettete `.eml`-Datei (PDF-Dateianhang)
 
-Andere Anhänge (Word, Excel, Bilder …) werden auf der Mailseite aufgeführt und sind
+Andere Anhänge (Word, Excel, GIF, HEIC …) werden auf der Mailseite aufgeführt und sind
 über die eingebettete `.eml` vollständig erhalten.
+
+Bilder:
+
+- Bildseite im Hoch- oder Querformat passend zum Bild, Bild auf A4 eingepasst, Dateiname oben.
+- Volle Auflösung für die Texterkennung in Paperless; JPEGs werden byte-genau übernommen,
+  PNGs verlustfrei neu kodiert.
+- EXIF-Ausrichtung von Handyfotos wird beim Zeichnen angewendet, das Original-JPEG bleibt unberührt.
+- Keine eigene Seite bekommen: Bilder unter 10 KB oder mit einer Kante unter 200 Pixeln
+  (Logos, Symbole; sie werden auf der Mailseite als „sehr klein“ aufgeführt) sowie im
+  Mailtext eingebettete Bilder unter 100 KB (Signatur-Logos; gar nicht aufgeführt).
+  Größere eingebettete Bilder werden übernommen, weil z. B. iPhone-Mail angehängte
+  Fotos so einbettet. Schwellen in `src/lib/image.js`.
 
 Entwickelt für Thunderbird 153 ESR und Paperless-ngx 3.2.1 (API-Schnittstellen gegen deren Quellen geprüft).
 
@@ -61,6 +73,7 @@ Eigentümer bzw. Anzeigerechte zuweisen.
 | `src/background.js` | Menü/Button, Ablaufsteuerung, Benachrichtigungen |
 | `src/lib/mail.js` | Mail, Text, Anhänge und Roh-Mail über die Thunderbird-API holen |
 | `src/lib/pdf.js` | PDF bauen (ohne Thunderbird-Abhängigkeit, unter Node testbar) |
+| `src/lib/image.js` | JPEG/PNG erkennen, Abmessungen und EXIF-Ausrichtung lesen |
 | `src/lib/text.js` | HTML→Text, Zeilenumbruch, Formatierung |
 | `src/lib/paperless.js` | Upload und Task-Status über die REST-API (API-Version 10) |
 | `src/options/` | Einstellungsseite |
