@@ -94,5 +94,9 @@ Eigentümer bzw. Anzeigerechte zuweisen.
 
 ## Lizenz
 
-MIT, siehe [`LICENSE`](LICENSE). Mitgelieferte Bibliotheken und Schriften unter ihren eigenen Lizenzen
-(`src/vendor/`, `src/fonts/LICENSE-DejaVu.txt`).
+MIT, siehe [`LICENSE`](LICENSE). Mitgelieferte Bibliotheken und Schriften stehen unter ihren eigenen Lizenzen:
+
+- `src/vendor/`: pdf-lib, fontkit und die darin gebündelten Pakete (u. a. MIT, ISC, BSD-3-Clause,
+  Zlib, Apache-2.0), siehe [`src/vendor/THIRD-PARTY-NOTICES.txt`](src/vendor/THIRD-PARTY-NOTICES.txt).
+  Bei einem Versionswechsel von pdf-lib oder fontkit diese Datei prüfen.
+- `src/fonts/`: DejaVu Sans, siehe [`src/fonts/LICENSE-DejaVu.txt`](src/fonts/LICENSE-DejaVu.txt).
