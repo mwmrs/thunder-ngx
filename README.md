@@ -91,3 +91,8 @@ Eigentümer bzw. Anzeigerechte zuweisen.
 - Die gleiche Mail ergibt byte-identische PDFs, so greift die Duplikaterkennung von Paperless.
 - Der API-Token liegt unverschlüsselt im Thunderbird-Profil (`storage.local`).
 - Schrift: DejaVu Sans (freie Lizenz, siehe `src/fonts/LICENSE-DejaVu.txt`).
+
+## Lizenz
+
+MIT, siehe [`LICENSE`](LICENSE). Mitgelieferte Bibliotheken und Schriften unter ihren eigenen Lizenzen
+(`src/vendor/`, `src/fonts/LICENSE-DejaVu.txt`).
